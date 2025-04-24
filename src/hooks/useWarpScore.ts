@@ -1,40 +1,34 @@
 import { useState, useEffect } from "react";
-import { fetchProfile, fetchCasts } from "~/lib/farcaster";
+import { useFrameSDK } from "~/hooks/useFrameSDK";
 
 export default function useWarpScore(startCalculation: boolean) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [warpScore, setWarpScore] = useState(0);
   const [error, setError] = useState<Error | null>(null);
+  const { context } = useFrameSDK();
+  const fid = (context as any)?.fid;
 
   useEffect(() => {
-    if (!startCalculation) return;
+    if (!startCalculation || !fid) return;
+    setLoading(true);
     (async () => {
       try {
-        const p = await fetchProfile();
-        const casts = await fetchCasts(10);
-        const totalEngagement = casts.reduce(
-          (sum: number, c: any) => sum + c.likes + c.recasts,
-          0,
-        );
-        const avgEngagement = casts.length
-          ? totalEngagement / casts.length
-          : 0;
-        const ageDays = Math.floor(
-          (Date.now() - new Date(p.registeredAt).getTime()) /
-            (1000 * 60 * 60 * 24),
-        );
-        const rawScore =
-          avgEngagement * 4 + p.followers * 0.5 + ageDays * 0.25;
-        setWarpScore(Math.min(Math.round(rawScore), 10000));
-        setProfile(p);
+        const res = await fetch(`/api/warpscore?fid=${fid}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(errorText);
+        }
+        const { profile, warpScore } = await res.json();
+        setProfile(profile);
+        setWarpScore(warpScore);
       } catch (e: any) {
         setError(e);
       } finally {
         setLoading(false);
       }
     })();
-  }, [startCalculation]);
+  }, [startCalculation, fid]);
 
   return { loading, error, profile, warpScore };
 }

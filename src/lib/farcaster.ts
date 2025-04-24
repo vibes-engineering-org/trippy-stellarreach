@@ -1,6 +1,6 @@
-export async function fetchProfile() {
+export async function fetchProfile(fid: string) {
   const res = await fetch(
-    "https://api.neynar.com/v2/farcaster/profiles",
+    `https://api.neynar.com/v2/farcaster/profiles?fid=${fid}`,
     {
       headers: { Authorization: `Bearer ${process.env.NEY_NAR_API_KEY}` },
     },
@@ -14,9 +14,9 @@ export async function fetchProfile() {
   };
 }
 
-export async function fetchCasts(limit = 10) {
+export async function fetchCasts(fid: string, limit = 10) {
   const res = await fetch(
-    `https://api.neynar.com/v2/farcaster/casts?limit=${limit}`,
+    `https://api.neynar.com/v2/farcaster/casts?fid=${fid}&limit=${limit}`,
     {
       headers: { Authorization: `Bearer ${process.env.NEY_NAR_API_KEY}` },
     },
