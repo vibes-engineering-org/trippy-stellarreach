@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
 import sdk from "@farcaster/frame-sdk";
 import { FrameNotificationDetails } from "@farcaster/frame-node";
@@ -103,17 +104,4 @@ export function useFrameSDK() {
     setIsAuthDialogOpen,
     isInFrame,
   };
-}
-"use client";
-
-import { useState, useEffect } from "react";
-
-export function useFrameSDK() {
-  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsSDKLoaded(true);
-  }, []);
-
-  return { isSDKLoaded };
 }
