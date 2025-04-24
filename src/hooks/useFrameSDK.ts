@@ -104,3 +104,16 @@ export function useFrameSDK() {
     isInFrame,
   };
 }
+"use client";
+
+import { useState, useEffect } from "react";
+
+export function useFrameSDK() {
+  const [isSDKLoaded, setIsSDKLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsSDKLoaded(true);
+  }, []);
+
+  return { isSDKLoaded };
+}
