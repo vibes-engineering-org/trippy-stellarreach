@@ -14,7 +14,7 @@ export default function useWarpScore(startCalculation: boolean) {
         const p = await fetchProfile();
         const casts = await fetchCasts(10);
         const totalEngagement = casts.reduce(
-          (sum, c) => sum + c.likes + c.recasts,
+          (sum: number, c: any) => sum + c.likes + c.recasts,
           0,
         );
         const avgEngagement = casts.length
