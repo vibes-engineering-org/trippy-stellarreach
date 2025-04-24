@@ -12,6 +12,7 @@ import {
 import { DaimoPayButton } from "@daimo/pay";
 import { Label } from "~/components/ui/label";
 import { useFrameSDK } from "~/hooks/useFrameSDK";
+import Frame from "~/components/Frame";
 import { baseUSDC } from "@daimo/contract";
 import { getAddress } from "viem";
 import BucketExplorer from "./BucketExplorer";
@@ -84,6 +85,7 @@ export default function MiniApp() {
 
   return (
     <div className="w-[400px] mx-auto py-2 px-2 space-y-4">
+      <Frame />
       <ExampleCard />
       <PaymentComponent />
       <FileUploadCard />
